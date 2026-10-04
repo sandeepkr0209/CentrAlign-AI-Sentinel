@@ -3,6 +3,9 @@
 
 **Investigate. Act. Verify.**
 
+[Live Demo]([https://example.com](https://centralign-ai-sentinel.onrender.com))
+
+
 SENTINEL is a small AI task worker for security-alert investigation. It checks whether a flagged dependency is actually used in a sample project, gathers evidence, creates a remediation case when appropriate, and then reads the case back to confirm it was saved correctly.
 
 SENTINEL is designed to show a complete, auditable workflow—not just a chatbot response. It records the actions it takes and the evidence behind its decisions.
