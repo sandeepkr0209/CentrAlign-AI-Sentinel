@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sentinel - Investigate. Act. Verify.</title>
+<style>
+:root{color-scheme:light;--bg:#f3eadb;--bg-soft:#eee2d0;--panel:#fffaf1;--panel-2:#f8f0e4;--line:#dfcfb8;--ink:#33251b;--mute:#796652;--brown:#98633d;--brown-d:#754829;--accent:#c68b58;--shadow:0 12px 32px rgba(77,52,30,.08);--ok:#3d7a4a;--okbg:#e4efdf;--warn:#9a6a12;--warnbg:#f6ead0;--bad:#a23b2a;--badbg:#f4ddd7;--tag:#eee0ca}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#211a16;--bg-soft:#2b211b;--panel:#30251e;--panel-2:#392c23;--line:#574333;--ink:#f4e8d7;--mute:#c0aa91;--brown:#c68b58;--brown-d:#dda875;--accent:#e0ad78;--shadow:0 14px 36px rgba(0,0,0,.22);--ok:#9bcea0;--okbg:#2c4432;--warn:#e8c078;--warnbg:#49391f;--bad:#e6a092;--badbg:#4a2d28;--tag:#453429}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;scroll-behavior:smooth}body{background:radial-gradient(ellipse at 85% -15%,var(--bg-soft),transparent 42%),var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55;transition:background .2s,color .2s}
+header{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:17px clamp(16px,3vw,38px);border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:0;z-index:5;box-shadow:0 3px 16px rgba(60,40,24,.04)}.brand h1{margin:0;font-family:Georgia,serif;font-size:clamp(25px,3vw,32px);letter-spacing:.2px}.brand small{color:var(--mute)}.head-tools{display:flex;align-items:center;gap:14px}.theme-toggle{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;background:var(--panel-2);color:var(--ink);padding:9px 13px;font:inherit;font-size:13px;cursor:pointer}.theme-toggle:hover{border-color:var(--brown);transform:translateY(-1px)}
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);min-height:calc(100vh - 78px)}nav{border-right:1px solid var(--line);padding:20px 13px;background:color-mix(in srgb,var(--panel) 55%,transparent)}nav button{display:block;width:100%;text-align:left;border:1px solid transparent;background:none;color:var(--ink);font:inherit;padding:11px 14px;border-radius:12px;cursor:pointer;transition:.18s}nav button:hover{background:var(--panel-2)}nav button.on{background:var(--tag);border-color:var(--line);font-weight:650}nav button:focus-visible,button:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--brown);outline-offset:3px}
+main{width:100%;max-width:1600px;margin:0 auto;padding:clamp(16px,2.5vw,32px);display:grid;gap:20px;align-content:start}.panel{min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:clamp(16px,2vw,24px);box-shadow:var(--shadow);transition:background .2s,border-color .2s}.panel h2{margin:0 0 12px;font-size:19px;letter-spacing:-.02em}.panel p{color:var(--mute)}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}textarea{flex:1;min-width:min(260px,100%);min-height:76px;padding:14px 15px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font:inherit;resize:vertical}textarea::placeholder{color:var(--mute);opacity:.85}.run{background:var(--brown);color:#fff;border:1px solid transparent;border-radius:12px;padding:14px 23px;font:inherit;font-weight:650;cursor:pointer;box-shadow:0 5px 14px color-mix(in srgb,var(--brown) 22%,transparent);transition:.18s}.run:hover{background:var(--brown-d);transform:translateY(-1px)}.run:disabled{opacity:.5;cursor:wait;transform:none}.chip{border:1px solid var(--line);background:var(--panel-2);color:var(--ink);font:inherit;font-size:13px;border-radius:999px;padding:7px 13px;cursor:pointer;transition:.18s}.chip:hover{border-color:var(--brown);background:var(--tag)}select{font:inherit;padding:8px 11px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--ink);min-width:180px}.grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:18px}.grid>*,.grid>div{min-width:0}
+ol.tl{list-style:none;margin:0;padding:0;max-height:460px;overflow:auto}ol.tl li{display:grid;grid-template-columns:100px minmax(0,1fr);gap:12px;padding:10px 2px;border-bottom:1px dashed var(--line);font-size:14px}ol.tl .t{color:var(--mute);font-variant-numeric:tabular-nums}.ty{font-weight:650;text-transform:capitalize}.k-recovery .ty,.k-guard_blocked .ty{color:var(--warn)}.k-case_created .ty,.k-verification_performed .ty{color:var(--ok)}.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:650;background:var(--tag);color:var(--ink)}.pill.ok{background:var(--okbg);color:var(--ok)}.pill.warn{background:var(--warnbg);color:var(--warn)}.pill.bad{background:var(--badbg);color:var(--bad)}.ev{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;overflow-wrap:anywhere}code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px}.mute{color:var(--mute)}.hide{display:none}table{width:100%;border-collapse:collapse;font-size:13px;overflow-wrap:anywhere}td,th{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line)}th{color:var(--mute);font-weight:650}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;background:var(--bg);color:var(--ink);padding:13px;border:1px solid var(--line);border-radius:10px;max-height:340px;overflow:auto}details summary{cursor:pointer;font-weight:650}#final p{margin-bottom:8px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}nav{display:flex;gap:8px;border-right:0;border-bottom:1px solid var(--line);padding:10px 14px}nav button{width:auto;flex:1}.grid{grid-template-columns:1fr}header{position:relative}}
+@media(max-width:560px){header{align-items:flex-start;padding:14px 16px}.head-tools{align-items:flex-end;flex-direction:column;gap:6px}.head-tools #planner{font-size:11px;text-align:right;max-width:170px}.theme-toggle{padding:7px 10px}main{padding:14px;gap:14px}.panel{border-radius:14px}#v-task .row textarea{flex-basis:100%}.run{width:100%}ol.tl li{grid-template-columns:76px minmax(0,1fr);gap:8px}table{display:block;overflow-x:auto;white-space:nowrap}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+</style></head><body>
+<header><div class="brand"><h1>Sentinel</h1><small>Investigate. Act. Verify.</small></div>
+<div class="head-tools"><div class="mute" id="planner">Autonomous Security Operations Worker</div><button class="theme-toggle" id="themeToggle" type="button" onclick="toggleTheme()" aria-label="Switch color theme"><span id="themeIcon" aria-hidden="true">☾</span><span id="themeLabel">Dark mode</span></button></div></header>
+<div class="layout">
+<nav><button class="on" id="nav-task" onclick="show('task')">New task</button>
+<button id="nav-cases" onclick="show('cases')">Remediation cases</button></nav>
+<main>
+<section id="v-task" class="hide" style="display:grid;gap:18px">
+ <div class="panel"><h2>Give a task to your AI worker</h2>
+  <p class="mute" style="margin-top:0">Describe what to investigate, check or record. Sentinel chooses the tools, shows its evidence, and verifies the result.</p>
+  <div class="row"><textarea id="task" aria-label="Task" placeholder="Investigate the critical dependency alert and determine whether the affected package is used by the project."></textarea>
+  <button class="run" id="go" onclick="runTask()">Run task</button></div>
+  <div class="row" style="margin-top:10px" id="chips"></div>
+  <div class="row" style="margin-top:10px"><label class="mute" for="fault">Demo fault injection</label>
+   <select id="fault"><option value="">None</option><option value="transient:2">Create fails twice (temporary)</option>
+   <option value="write-then-fail">Record written, response lost</option><option value="tamper">Stored evidence corrupted</option></select>
+   <button class="chip" onclick="resetData()">Reset demo data</button></div>
+  <p id="err" class="pill bad hide"></p></div>
+ <div class="grid">
+  <div class="panel"><h2>Execution timeline</h2><ol class="tl" id="tl"><li><span></span><span class="mute">No task has run yet.</span></li></ol></div>
+  <div style="display:grid;gap:18px;align-content:start">
+   <div class="panel"><h2>Current step</h2><div id="cur" class="mute">Idle</div></div>
+   <div class="panel"><h2>Evidence</h2><div id="ev" class="mute">Evidence appears here as tools return results.</div></div>
+  </div></div>
+ <div class="grid">
+  <div class="panel"><h2>Remediation case</h2><div id="case" class="mute">No case yet.</div></div>
+  <div class="panel"><h2>Final result</h2><div id="final" class="mute">Waiting for a task.</div></div>
+ </div>
+ <details class="panel"><summary>Full execution report</summary><pre id="report"></pre></details>
+</section>
+<section id="v-cases" class="panel hide"><h2>Remediation cases</h2><div id="cases"></div></section>
+</main></div>
+<script>
+const EX=["Investigate the critical dependency security alert in this project. Check whether the affected package is actually used, create a remediation case with supporting evidence, and verify that the case was recorded.",
+"Investigate the high severity Jinja2 alert and create a remediation case with evidence.",
+"Check whether Pillow is used in this project.","Investigate the security alert and create a remediation case.",
+"Investigate the critical dependency alert, create a remediation case and apply a patch to upgrade the package."];
+const LABELS=["Critical alert + case","Docs-only mention","Check dependency usage","Ambiguous request","Request a patch"];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+EX.forEach((t,i)=>{const b=document.createElement("button");b.className="chip";b.textContent=LABELS[i];b.onclick=()=>{$("task").value=t};$("chips").appendChild(b)});
+function show(v){["task","cases"].forEach(x=>{$("v-"+x).style.display=x===v?(x==="task"?"grid":"block"):"none";$("nav-"+x).classList.toggle("on",x===v)});if(v==="cases")loadCases()}
+show("task");
+function applyTheme(theme){document.documentElement.dataset.theme=theme;$('themeIcon').textContent=theme==='dark'?'☀':'☾';$('themeLabel').textContent=theme==='dark'?'Light mode':'Dark mode';$('themeToggle').setAttribute('aria-label',theme==='dark'?'Switch to light theme':'Switch to dark theme');try{localStorage.setItem('sentinel-theme',theme)}catch(e){}}
+function toggleTheme(){applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark')}
+(function(){let saved=null;try{saved=localStorage.getItem('sentinel-theme')}catch(e){};applyTheme(saved||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))})();
+let timer=null;
+async function runTask(){
+ const task=$("task").value.trim();$("err").classList.add("hide");
+ if(!task){$("err").textContent="Enter a task first.";$("err").classList.remove("hide");return}
+ $("go").disabled=true;
+ const r=await fetch("/api/run",{method:"POST",body:JSON.stringify({task,fault:$("fault").value})});
+ const j=await r.json();
+ if(!r.ok){$("err").textContent=j.error;$("err").classList.remove("hide");$("go").disabled=false;return}
+ clearInterval(timer);timer=setInterval(()=>poll(j.task_id),400);poll(j.task_id)}
+async function poll(id){
+ const r=await fetch("/api/runs/"+id);if(!r.ok)return;const {state:s,events,report}=await r.json();
+ $("tl").innerHTML=events.map(e=>`<li class="k-${e.type}"><span class="t">${esc(e.ts.slice(11,23))}</span><span><span class="ty">${esc(e.type.replace(/_/g," "))}</span><br>${esc(e.message)}</span></li>`).join("");
+ $("tl").scrollTop=$("tl").scrollHeight;
+ const run=s.status==="RUNNING";
+ $("cur").innerHTML=run?`<b>${esc(s.current_action||"Reasoning...")}</b><br><span class="mute">Iteration ${s.iteration}. ${s.completed_actions.length} done, ${s.failed_actions.length} failed, ${s.retry_count} recovery attempt(s)</span>`:`<span class="mute">Finished after ${s.iteration} iteration(s). ${s.completed_actions.length} actions succeeded, ${s.failed_actions.length} failed.</span>`;
+ const files=s.files_inspected.map(f=>`<div class="ev"><span><code>${esc(f.path)}</code></span><span class="pill ${f.ok?"ok":"warn"}">${f.ok?"inspected":esc(f.error)}</span></div>`).join("");
+ const ev=s.evidence.map(e=>`<div class="ev"><span><code>${esc(e.file)}:${e.line}</code> ${esc(e.snippet).slice(0,60)}</span><span class="pill">${esc(e.kind.replace("_"," "))}</span></div>`).join("");
+ const al=s.selected_alert?`<div class="ev"><span><b>${esc(s.selected_alert.id)}</b> ${esc(s.selected_alert.package)} (${esc(s.selected_alert.severity)})</span><span class="pill ${s.verdict==="CONFIRMED"?"ok":"warn"}">${esc(s.verdict||"assessing")}</span></div>`:"";
+ $("ev").innerHTML=(al+files+ev)||"No evidence yet.";
+ const cid=s.target_case_id;
+ $("case").innerHTML=cid?`<b>${esc(cid)}</b> <span class="pill">${s.case_reused?"existing case reused":"created"}</span><br><span class="mute">${s.verification?(s.verification.passed?"Independent read-back matched all "+s.verification.checks.length+" checks.":"Read-back FAILED: "+esc(s.verification.failed_checks.join(", "))):"Not verified yet."}</span>`:"No case recorded.";
+ if(!run){clearInterval(timer);$("go").disabled=false;
+  const cls=s.status==="COMPLETED"?"ok":s.status==="FAILED"?"bad":"warn";
+  $("final").innerHTML=`<span class="pill ${cls}">${esc(s.status.replace("_"," "))}</span><p>${esc(s.final_message)}</p><span class="mute">${esc((s.limitations||[]).join(" "))}</span>`;
+  $("report").textContent=report}}
+async function loadCases(){const j=await (await fetch("/api/cases")).json();
+ $("cases").innerHTML=j.cases.length?`<table><tr><th>Case</th><th>Alert</th><th>Severity</th><th>Status</th><th>Title</th><th>Evidence</th></tr>${j.cases.map(c=>`<tr><td>${esc(c.case_id)}</td><td>${esc(c.alert_id)}</td><td>${esc(c.severity)}</td><td>${esc(c.status)}</td><td>${esc(c.title)}</td><td>${c.evidence.length}</td></tr>`).join("")}</table>`:"<span class='mute'>No cases recorded yet.</span>"}
+async function resetData(){await fetch("/api/reset",{method:"POST",body:"{}"});$("tl").innerHTML="";$("case").textContent="No case yet.";$("final").textContent="Demo data cleared.";$("ev").textContent="";}
+fetch("/api/config").then(r=>r.json()).then(c=>{$("planner").textContent=c.error?("Configuration error: "+c.error):c.label});
+</script></body></html>

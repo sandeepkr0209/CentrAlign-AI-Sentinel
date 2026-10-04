@@ -1,0 +1,41 @@
+[
+  {
+    "id": "ALERT-001",
+    "title": "PyYAML arbitrary code execution via full_load",
+    "severity": "critical",
+    "package": "PyYAML",
+    "ecosystem": "pypi",
+    "cve": "CVE-2020-14343",
+    "affected_versions": "<5.4",
+    "fixed_version": "5.4",
+    "manifest_path": "pyproject.toml",
+    "status": "open",
+    "description": "Seeded sample alert (illustrative metadata). The scanner reported the dependency in pyproject.toml."
+  },
+  {
+    "id": "ALERT-002",
+    "title": "Jinja2 cross-site scripting in xmlattr filter",
+    "severity": "high",
+    "package": "Jinja2",
+    "ecosystem": "pypi",
+    "cve": "CVE-2024-22195",
+    "affected_versions": "<3.1.3",
+    "fixed_version": "3.1.3",
+    "manifest_path": "requirements.txt",
+    "status": "open",
+    "description": "Seeded sample alert (illustrative metadata)."
+  },
+  {
+    "id": "ALERT-003",
+    "title": "Pillow denial of service in image decoding",
+    "severity": "medium",
+    "package": "Pillow",
+    "ecosystem": "pypi",
+    "cve": "CVE-2023-44271",
+    "affected_versions": "<10.0.0",
+    "fixed_version": "10.0.0",
+    "manifest_path": "requirements.txt",
+    "status": "open",
+    "description": "Seeded sample alert (illustrative metadata)."
+  }
+]

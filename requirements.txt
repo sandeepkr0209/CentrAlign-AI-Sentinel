@@ -1,0 +1,3 @@
+# Runtime: Python 3.12 standard library only; no runtime packages required.
+# Optional test runner (the suite also runs with unittest):
+pytest>=8.0
