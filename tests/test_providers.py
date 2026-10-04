@@ -1,4 +1,5 @@
 """Provider tests. Every provider response is mocked at the HTTP boundary: no network, no real API keys."""
+import code
 import contextlib
 import io
 import json
@@ -194,11 +195,18 @@ class ProviderSelection(unittest.TestCase):
         self.assertIn("GROQ_API_KEY", bad["error"])
 
     def test_cli_exits_with_error_on_missing_key(self):
-        env = {"LLM_PROVIDER": "groq", "SENTINEL_DB": os.devnull + ".unused"}
+        env = {
+            "LLM_PROVIDER": "groq",
+            "SENTINEL_DB": os.devnull + ".unused",
+        }
         err = io.StringIO()
-        with mock.patch.dict(os.environ, env, clear=False), contextlib.redirect_stderr(err):
+
+        with mock.patch.dict(os.environ, env, clear=False):
             os.environ.pop("GROQ_API_KEY", None)
-            code = main(["run", TASK])
+            with mock.patch("app.config._load_dotenv"):
+                with contextlib.redirect_stderr(err):
+                    code = main(["run", TASK])
+
         self.assertEqual(code, 1)
         self.assertIn("GROQ_API_KEY", err.getvalue())
 
@@ -269,6 +277,7 @@ class AgentWithMockedProviders(AgentTestCase):
         self.assertEqual(len(api.calls), 1)
         self.assertEqual(self.db.list_cases(), [])
         self.assertIn("provider_error", [e["type"] for e in self.db.events(st.task_id)])
+
 
     def test_temporary_provider_error_falls_back_visibly(self):
         api = FakeAPI("anthropic", script={1: (429, {}), 2: (429, {}), 3: (429, {}), 4: (503, {})})  # 429 outlasts the retries

@@ -1,6 +1,6 @@
 """Minimal standard-library web console (no framework). Binds to localhost only."""
 from __future__ import annotations
-
+import os 
 import json
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -53,6 +53,8 @@ def make_handler(cfg: Config, db: Database):
             except json.JSONDecodeError:
                 return self._send(400, {"error": "invalid JSON"})
             if self.path == "/api/reset":
+                if os.environ.get("SENTINEL_ALLOW_RESET", "true").lower() != "true":
+                    return self._send(403, {"error": "Reset is disabled on this deployment."})
                 db.reset()
                 return self._send(200, {"ok": True})
             if self.path != "/api/run":
@@ -81,11 +83,11 @@ def make_handler(cfg: Config, db: Database):
     return Handler
 
 
-def serve(cfg: Config, port: int = 8765) -> None:
+def serve(cfg: Config, port: int = 8765, host: str = "127.0.0.1") -> None:
     db = Database(cfg.db_path)
-    server = ThreadingHTTPServer(("127.0.0.1", port), make_handler(cfg, db))
+    server = ThreadingHTTPServer((host, port), make_handler(cfg, db))
     print(describe_planner(cfg)["label"])
-    print(f"SENTINEL console: http://127.0.0.1:{port}   (Ctrl+C to stop)")
+    print(f"SENTINEL console listening on {host}:{port}   (Ctrl+C to stop)")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

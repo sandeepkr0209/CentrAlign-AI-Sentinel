@@ -1,6 +1,6 @@
 """SENTINEL command line.   python -m app.main --help"""
 from __future__ import annotations
-
+import os
 import argparse
 import sys
 from dataclasses import replace
@@ -27,7 +27,8 @@ def main(argv=None) -> int:
     d.add_argument("--rules", action="store_true", help="force the rule-based planner even if LLM_PROVIDER is set")
     sub.add_parser("cases", help="list remediation cases")
     s = sub.add_parser("serve", help="start the web console")
-    s.add_argument("--port", type=int, default=8765)
+    s.add_argument("--host", default=os.environ.get("HOST", "127.0.0.1"))
+    s.add_argument("--port", type=int, default=int(os.environ.get("PORT", "8765")))
     args = p.parse_args(argv)
     cfg = Config.from_env()
 
@@ -64,7 +65,7 @@ def main(argv=None) -> int:
         return 0
     if args.cmd == "serve":
         from app.web import serve
-        serve(cfg, args.port)
+        serve(cfg, args.port, args.host)
         return 0
     return 1
 
