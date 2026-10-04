@@ -197,7 +197,7 @@ class ProviderSelection(unittest.TestCase):
     def test_cli_exits_with_error_on_missing_key(self):
         env = {
             "LLM_PROVIDER": "groq",
-            "SENTINEL_DB": os.devnull + ".unused",
+            "SENTINEL_DB": str(__import__("pathlib").Path("data") / "test-unused.db"),
         }
         err = io.StringIO()
 
